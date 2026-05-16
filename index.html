@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>VESTIS — Your Digital Closet</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Theme & Status Bar -->
+  <meta name="theme-color" content="#080808" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="VESTIS" />
+
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" href="icons/icon-152.png" />
+  <link rel="apple-touch-icon" sizes="72x72"  href="icons/icon-72.png" />
+  <link rel="apple-touch-icon" sizes="96x96"  href="icons/icon-96.png" />
+  <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-72.png" />
+
+  <!-- SEO & Description -->
+  <meta name="description" content="VESTIS — votre garde-robe digitale. Organisez vos vêtements, générez des tenues, vivez avec style." />
+  <meta name="keywords" content="wardrobe, digital closet, outfit generator, fashion, vestis" />
+
+  <!-- Splash screens iOS -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- PARTICLES -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-logo">VESTIS</div>
+    <div class="nav-links">
+      <a href="#closet" class="nav-link">Closet</a>
+      <a href="#generator" class="nav-link">Outfits</a>
+      <a href="#saved" class="nav-link">Saved</a>
+    </div>
+    <button class="btn-install" id="installBtn" style="display:none" title="Installer l'app">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <path d="M7.5 1v9M3.5 6.5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M1.5 11v1.5a1 1 0 001 1h10a1 1 0 001-1V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Installer</span>
+    </button>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <!-- INSTALL BANNER (iOS instructions) -->
+  <div class="install-banner" id="installBanner" style="display:none">
+    <div class="install-banner-inner">
+      <div class="install-banner-icon">
+        <img src="icons/icon-96.png" alt="VESTIS" />
+      </div>
+      <div class="install-banner-text">
+        <strong>Installer VESTIS</strong>
+        <span id="installBannerMsg">Appuyez sur <b>Partager</b> puis <b>"Sur l'écran d'accueil"</b></span>
+      </div>
+      <button class="install-banner-close" id="installBannerClose">✕</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Your Personal Style Universe</div>
+      <h1 class="hero-title">
+        <span class="hero-title-line reveal-line">Dress with</span>
+        <span class="hero-title-line reveal-line italic">Intention.</span>
+      </h1>
+      <p class="hero-sub reveal-fade">Curate your wardrobe. Generate outfits. Live stylishly.</p>
+      <a href="#closet" class="hero-cta reveal-fade">
+        <span>Start Styling</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-floating-cards">
+      <div class="floating-card fc-1">
+        <div class="fc-icon">👗</div>
+        <div class="fc-label">Tops</div>
+      </div>
+      <div class="floating-card fc-2">
+        <div class="fc-icon">👠</div>
+        <div class="fc-label">Shoes</div>
+      </div>
+      <div class="floating-card fc-3">
+        <div class="fc-icon">🧥</div>
+        <div class="fc-label">Jackets</div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- CLOSET SECTION -->
+  <section class="section closet-section" id="closet">
+    <div class="section-header">
+      <div class="section-eyebrow">My Wardrobe</div>
+      <h2 class="section-title">Digital Closet</h2>
+      <p class="section-sub">Upload and organize your entire wardrobe</p>
+    </div>
+
+    <!-- UPLOAD AREA -->
+    <div class="upload-zone" id="uploadZone">
+      <div class="upload-inner" id="uploadInner">
+        <div class="upload-icon-ring">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4v16M8 12l8-8 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 24v2a2 2 0 002 2h20a2 2 0 002-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="upload-text">
+          <p class="upload-primary">Drop your clothing photo here</p>
+          <p class="upload-secondary">or <span class="upload-browse" id="uploadBrowse">browse files</span></p>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" hidden />
+      </div>
+    </div>
+
+    <!-- ADD ITEM FORM -->
+    <div class="add-form" id="addForm">
+      <div class="form-preview" id="formPreview">
+        <img id="previewImg" src="" alt="Preview" />
+        <button class="form-clear" id="formClear">✕</button>
+      </div>
+      <div class="form-fields">
+        <div class="form-group">
+          <label class="form-label">Item Name</label>
+          <input type="text" id="itemName" class="form-input" placeholder="e.g. White Linen Shirt" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <div class="category-pills" id="categoryPills">
+            <button class="pill" data-cat="Tops">Tops</button>
+            <button class="pill" data-cat="Pants">Pants</button>
+            <button class="pill" data-cat="Shoes">Shoes</button>
+            <button class="pill" data-cat="Jackets">Jackets</button>
+            <button class="pill" data-cat="Accessories">Accessories</button>
+          </div>
+        </div>
+        <button class="btn-primary" id="saveItemBtn">Add to Closet</button>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="All">All</button>
+      <button class="filter-btn" data-filter="Tops">Tops</button>
+      <button class="filter-btn" data-filter="Pants">Pants</button>
+      <button class="filter-btn" data-filter="Shoes">Shoes</button>
+      <button class="filter-btn" data-filter="Jackets">Jackets</button>
+      <button class="filter-btn" data-filter="Accessories">Accessories</button>
+    </div>
+
+    <!-- CLOSET GRID -->
+    <div class="closet-grid" id="closetGrid"></div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="closetEmpty">
+      <div class="empty-icon">🪞</div>
+      <h3>Your closet is empty</h3>
+      <p>Upload your first clothing item to get started</p>
+    </div>
+  </section>
+
+  <!-- OUTFIT GENERATOR -->
+  <section class="section generator-section" id="generator">
+    <div class="section-header">
+      <div class="section-eyebrow">AI Stylist</div>
+      <h2 class="section-title">Outfit Generator</h2>
+      <p class="section-sub">Let chance be your stylist today</p>
+    </div>
+
+    <div class="generator-stage" id="generatorStage">
+      <div class="stage-empty" id="stageEmpty">
+        <div class="stage-empty-icon">✨</div>
+        <p>Click generate to create your perfect look</p>
+      </div>
+      <div class="outfit-display" id="outfitDisplay" style="display:none">
+        <div class="outfit-slots" id="outfitSlots"></div>
+        <div class="outfit-actions">
+          <button class="btn-ghost" id="regenBtn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1 0 6-6 6 6 0 0 0-4.24 1.76L2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 2v3.5H5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Generate Again
+          </button>
+          <button class="btn-primary" id="saveOutfitBtn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Save Outfit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="generateBtn">
+      <span class="generate-pulse"></span>
+      <span>Generate Outfit</span>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5L12.5 7.5H17.5L13.75 10.5L15 15.5L10 12.5L5 15.5L6.25 10.5L2.5 7.5H7.5L10 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </button>
+  </section>
+
+  <!-- SAVED OUTFITS -->
+  <section class="section saved-section" id="saved">
+    <div class="section-header">
+      <div class="section-eyebrow">My Looks</div>
+      <h2 class="section-title">Saved Outfits</h2>
+      <p class="section-sub">Your curated collection of perfect looks</p>
+    </div>
+
+    <div class="saved-grid" id="savedGrid"></div>
+
+    <div class="empty-state" id="savedEmpty">
+      <div class="empty-icon">💫</div>
+      <h3>No saved outfits yet</h3>
+      <p>Generate an outfit and save it here</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">VESTIS</div>
+    <p class="footer-tagline">Dress with Intention.</p>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-overlay" id="lightboxOverlay"></div>
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="" />
+      <button class="lightbox-close" id="lightboxClose">✕</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // ── SERVICE WORKER REGISTRATION ──
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[VESTIS] SW registered:', reg.scope))
+          .catch(err => console.warn('[VESTIS] SW error:', err));
+      });
+    }
+  </script>
+</body>
+</html>
